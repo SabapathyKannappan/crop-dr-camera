@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Camera, Upload, Sparkles, X, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { apiClient } from '../utils/api';
+import CropDocChat from '../components/CropDocChat';
 
 // Image validation constants
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -124,10 +125,11 @@ const Scan = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen pb-nav animate-grow">
+  // Camera/Scanner Section Component
+  const ScannerSection = () => (
+    <div className="h-full flex flex-col">
       {/* Header */}
-      <header className="bg-[#344E41] text-white px-4 sm:px-6 pt-6 sm:pt-8 pb-5 sm:pb-6">
+      <header className="bg-[#344E41] text-white px-4 sm:px-6 pt-6 sm:pt-8 pb-5 sm:pb-6 flex-shrink-0">
         <h1 
           className="text-2xl sm:text-3xl font-bold mb-2" 
           style={{ fontFamily: 'Playfair Display, serif' }}
@@ -140,7 +142,7 @@ const Scan = () => {
         </p>
       </header>
 
-      <main className="px-4 sm:px-6 max-w-2xl mx-auto">
+      <main className="flex-1 overflow-y-auto px-4 sm:px-6 pb-6">
         {!preview ? (
           /* Upload Area - Mobile-first */
           <section className="mt-6 space-y-4 sm:space-y-6">
@@ -157,7 +159,7 @@ const Scan = () => {
             
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="relative w-full bg-white rounded-2xl sm:rounded-3xl p-12 sm:p-16 shadow-sm border-2 border-dashed border-[#A3B18A] card-lift overflow-hidden min-h-[300px] sm:min-h-[350px]"
+              className="relative w-full bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border-2 border-dashed border-[#A3B18A] card-lift overflow-hidden min-h-[250px] lg:min-h-[300px]"
               disabled={analyzing}
               aria-label="Select or capture plant image"
               data-testid="upload-area"
@@ -172,16 +174,16 @@ const Scan = () => {
               <div className="absolute inset-0 bg-gradient-to-b from-[#344E41]/70 to-[#344E41]/90"></div>
               
               <div className="relative text-center text-white">
-                <div className="mx-auto w-20 h-20 sm:w-24 sm:h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 sm:mb-6 animate-breathe">
-                  <Camera className="text-white" size={36} aria-hidden="true" />
+                <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 animate-breathe">
+                  <Camera className="text-white" size={32} aria-hidden="true" />
                 </div>
-                <h2 className="text-xl sm:text-2xl font-semibold mb-2 sm:mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
+                <h2 className="text-xl sm:text-2xl font-semibold mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
                   Capture or Upload
                 </h2>
-                <p className="text-white/90 mb-4 sm:mb-6 text-sm">
+                <p className="text-white/90 mb-4 text-sm">
                   Take a photo or choose from your gallery
                 </p>
-                <div className="flex justify-center gap-3 sm:gap-4 text-xs sm:text-sm">
+                <div className="flex justify-center gap-3 text-xs sm:text-sm">
                   <div className="flex items-center gap-2">
                     <Upload size={14} aria-hidden="true" />
                     <span>JPG, PNG, WEBP</span>
@@ -203,28 +205,28 @@ const Scan = () => {
             />
 
             {/* Tips Card */}
-            <article className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-[#A3B18A]/20">
+            <article className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-sm border border-[#A3B18A]/20">
               <h3 
-                className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2" 
+                className="text-base font-semibold mb-3 flex items-center gap-2" 
                 style={{ color: '#344E41', fontFamily: 'Playfair Display, serif' }}
               >
                 <Sparkles size={18} aria-hidden="true" />
                 <span>Tips for Best Results</span>
               </h3>
-              <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-[#588157]">
-                <li className="flex items-start gap-2 sm:gap-3">
+              <ul className="space-y-2 text-xs sm:text-sm text-[#588157]">
+                <li className="flex items-start gap-2">
                   <span className="text-[#344E41] font-bold flex-shrink-0">•</span>
                   <span>Use natural daylight for clearer images</span>
                 </li>
-                <li className="flex items-start gap-2 sm:gap-3">
+                <li className="flex items-start gap-2">
                   <span className="text-[#344E41] font-bold flex-shrink-0">•</span>
                   <span>Focus on affected leaves showing symptoms</span>
                 </li>
-                <li className="flex items-start gap-2 sm:gap-3">
+                <li className="flex items-start gap-2">
                   <span className="text-[#344E41] font-bold flex-shrink-0">•</span>
                   <span>Ensure the image is sharp and not blurry</span>
                 </li>
-                <li className="flex items-start gap-2 sm:gap-3">
+                <li className="flex items-start gap-2">
                   <span className="text-[#344E41] font-bold flex-shrink-0">•</span>
                   <span>Fill the frame with the plant for better detection</span>
                 </li>
@@ -241,7 +243,7 @@ const Scan = () => {
               <img
                 src={preview}
                 alt="Preview of selected plant image"
-                className="w-full h-auto rounded-xl sm:rounded-2xl"
+                className="w-full h-auto rounded-xl sm:rounded-2xl max-h-[300px] object-contain"
               />
               <button
                 onClick={handleClear}
@@ -258,7 +260,7 @@ const Scan = () => {
             <button
               onClick={handleAnalyze}
               disabled={analyzing}
-              className="w-full bg-[#344E41] text-white rounded-full px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-semibold shadow-[0_10px_40px_-10px_rgba(52,78,65,0.3)] hover:shadow-[0_20px_50px_-10px_rgba(52,78,65,0.4)] transition-all duration-300 btn-press disabled:opacity-50 disabled:cursor-not-allowed min-h-[56px]"
+              className="w-full bg-[#344E41] text-white rounded-full px-6 sm:px-8 py-4 sm:py-5 text-base font-semibold shadow-[0_10px_40px_-10px_rgba(52,78,65,0.3)] hover:shadow-[0_20px_50px_-10px_rgba(52,78,65,0.4)] transition-all duration-300 btn-press disabled:opacity-50 disabled:cursor-not-allowed min-h-[56px]"
               aria-label={analyzing ? 'Analyzing plant, please wait' : 'Analyze plant image'}
               aria-busy={analyzing}
               data-testid="analyze-button"
@@ -270,7 +272,7 @@ const Scan = () => {
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-3">
-                  <Sparkles size={24} aria-hidden="true" />
+                  <Sparkles size={20} aria-hidden="true" />
                   <span>Analyze Plant</span>
                 </div>
               )}
@@ -284,6 +286,35 @@ const Scan = () => {
           </section>
         )}
       </main>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen pb-nav animate-grow">
+      {/* Desktop: Side-by-side layout */}
+      <div className="hidden lg:flex h-[calc(100vh-80px)]">
+        {/* Left side - Scanner */}
+        <div className="w-1/2 border-r border-[#A3B18A]/20">
+          <ScannerSection />
+        </div>
+        
+        {/* Right side - Crop Doc Chat */}
+        <div className="w-1/2 p-4 bg-[#F9F9F7]">
+          <CropDocChat />
+        </div>
+      </div>
+
+      {/* Mobile/Tablet: Stacked layout */}
+      <div className="lg:hidden">
+        <ScannerSection />
+        
+        {/* Mobile Chat Section */}
+        <div className="px-4 pb-6 mt-6">
+          <div className="h-[500px]">
+            <CropDocChat />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

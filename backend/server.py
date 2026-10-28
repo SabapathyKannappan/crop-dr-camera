@@ -112,6 +112,18 @@ class ProgressPoint(BaseModel):
     health_score: int
     disease_count: int
 
+class ChatMessage(BaseModel):
+    role: str  # 'user' or 'assistant'
+    content: str
+
+class ChatRequest(BaseModel):
+    message: str
+    session_id: Optional[str] = None
+
+class ChatResponse(BaseModel):
+    response: str
+    session_id: str
+
 # Authentication endpoints
 @api_router.post("/auth/signin", response_model=SignInResponse)
 async def signin(request: SignInRequest):
@@ -243,7 +255,7 @@ async def diagnose_plant(
             elif '```' in response_text:
                 response_text = response_text.split('```')[1].split('```')[0]
             diagnosis_data = json.loads(response_text)
-        except:
+        except Exception:
             diagnosis_data = {
                 "plant_name": "Unknown Plant",
                 "disease_name": "Unable to parse diagnosis",
@@ -412,6 +424,69 @@ async def get_progress(auth_code: str = Depends(verify_auth_code)):
         "progress_points": recent_points,
         "total_points": len(progress_points)
     }
+
+# Store chat sessions in memory (for simplicity - can be moved to DB for persistence)
+chat_sessions: Dict[str, LlmChat] = {}
+
+@api_router.post("/chat", response_model=ChatResponse)
+async def chat_with_crop_doc(
+    request: ChatRequest,
+    auth_code: str = Depends(verify_auth_code)
+):
+    """Chat with Crop Doc - the expert farmer assistant"""
+    try:
+        session_id = request.session_id or f"chat_{auth_code}_{uuid.uuid4()}"
+        
+        # Get or create chat session
+        if session_id not in chat_sessions:
+            chat_sessions[session_id] = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=session_id,
+                system_message="""You are Crop Doc, a friendly and knowledgeable digital agricultural specialist. 
+                
+Your role is to help farmers and gardeners with:
+- Identifying crop diseases and pests
+- Providing treatment recommendations using simple, practical methods
+- Offering fertilizer and soil care advice
+- Suggesting organic and chemical solutions when appropriate
+- Explaining plant nutrition and watering schedules
+- Advising on seasonal planting and harvesting
+
+COMMUNICATION STYLE:
+- Use simple, accessible farming terms that any farmer can understand
+- Avoid complex scientific jargon - explain things like you're talking to a neighbor
+- Be warm, patient, and encouraging
+- Give actionable, step-by-step advice
+- When suggesting products, mention both generic names and common brands when helpful
+- Include practical tips based on real farming experience
+
+IMPORTANT RULES:
+1. ONLY discuss topics related to agriculture, farming, gardening, and plant care
+2. If asked about non-agricultural topics, politely redirect: "I'm specialized in crop and plant care. How can I help with your farming or gardening needs?"
+3. Always prioritize plant and soil health
+4. Suggest environmentally friendly solutions when possible
+5. Recommend consulting local agricultural extension services for complex issues
+
+Keep responses concise but informative. Farmers are busy people!"""
+            ).with_model("openai", "gpt-5.1")
+        
+        chat = chat_sessions[session_id]
+        
+        # Send message and get response
+        user_message = UserMessage(text=request.message)
+        response = await chat.send_message(user_message)
+        
+        # Log chat interaction
+        logging.info(f"Chat interaction for user {auth_code}: {request.message[:50]}...")
+        
+        return ChatResponse(
+            response=response,
+            session_id=session_id
+        )
+        
+    except Exception as e:
+        logging.error(f"Chat error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to process your message. Please try again.")
 
 # Include the router in the main app
 app.include_router(api_router)
