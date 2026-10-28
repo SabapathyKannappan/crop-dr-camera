@@ -1,0 +1,144 @@
+{
+  "identity": {
+    "name": "Plant Doctor Camera",
+    "persona": "E1 - The Digital Botanist",
+    "vibe": "Scientific Precision meets Greenhouse Warmth",
+    "principles": [
+      "Fusion: Botanical Illustration aesthetics + Medical Lab clarity",
+      "Emotion: Calming, reassuring, yet authoritative",
+      "Content: Your plants are the heroes; the UI is the frame",
+      "Texture: Paper grain and organic noise over flat digital colors"
+    ]
+  },
+  "typography": {
+    "headings": {
+      "family": "Playfair Display, serif",
+      "usage": "Use for all major section headers (h1, h2). It evokes the feeling of a classic botanical encyclopedia.",
+      "weights": "SemiBold (600) or Bold (700)",
+      "letterSpacing": "-0.02em"
+    },
+    "body": {
+      "family": "Manrope, sans-serif",
+      "usage": "Use for all UI text, labels, and data. It is highly legible and modern.",
+      "weights": "Regular (400) for text, Medium (500) for labels"
+    },
+    "mono": {
+      "family": "JetBrains Mono, monospace",
+      "usage": "Use ONLY for scientific names of plants or confidence scores (e.g., '98% Confidence')."
+    }
+  },
+  "colors": {
+    "palette": {
+      "primary": {
+        "name": "Deep Moss",
+        "hex": "#344E41",
+        "tailwind": "bg-[#344E41] text-white",
+        "usage": "Primary buttons, active states, strong headings"
+      },
+      "secondary": {
+        "name": "Sage Leaf",
+        "hex": "#A3B18A",
+        "tailwind": "bg-[#A3B18A] text-[#344E41]",
+        "usage": "Secondary buttons, progress bars, accents"
+      },
+      "accent": {
+        "name": "Healing Clay",
+        "hex": "#D4A373",
+        "tailwind": "bg-[#D4A373] text-white",
+        "usage": "Alerts, 'Action Needed' badges, warm highlights"
+      },
+      "background": {
+        "name": "Rice Paper",
+        "hex": "#F9F9F7",
+        "tailwind": "bg-[#F9F9F7]",
+        "usage": "Main app background. NEVER use pure white #FFFFFF for the page bg."
+      },
+      "surface": {
+        "name": "Clean Canvas",
+        "hex": "#FFFFFF",
+        "tailwind": "bg-white",
+        "usage": "Cards, modals, bottom navigation"
+      },
+      "text": {
+        "primary": "#344E41",
+        "secondary": "#588157",
+        "muted": "#A3B18A"
+      }
+    },
+    "gradients": {
+      "scan_overlay": "linear-gradient(180deg, rgba(52, 78, 65, 0) 0%, rgba(52, 78, 65, 0.8) 100%)"
+    }
+  },
+  "layout_strategies": {
+    "spacing": {
+      "base": "Generous. Use p-6 or p-8 where others use p-4.",
+      "containers": "Rounded-3xl (24px) for main cards. Rounded-2xl (16px) for inner elements.",
+      "mobile_safe_area": "Ensure bottom nav has pb-8 to clear home indicators."
+    },
+    "grids": {
+      "dashboard": "Bento Grid style. Mix square tiles (Quick Scan) with tall tiles (Recent History).",
+      "plant_list": "Masonry or Staggered Grid. Plants don't grow in perfect rows."
+    },
+    "navigation": {
+      "style": "Floating Dock",
+      "position": "Fixed bottom, centered, detached from edges.",
+      "scan_button": "Elevated, circular, 20% larger than other icons. Uses 'Deep Moss' color with a subtle shadow."
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "Pill-shaped (rounded-full). High contrast. Shadow-lg.",
+      "secondary": "Ghost or Outline with 'Deep Moss' border.",
+      "scan": "The 'Shutter' button. Circular, possibly with a slow breathing animation."
+    },
+    "cards": {
+      "style": "Neumorphic-Lite. White bg, subtle shadow-sm, 1px border of #A3B18A (20% opacity).",
+      "hover": "Lift up (-2px) and deepen shadow."
+    },
+    "inputs": {
+      "style": "Underlined or soft-filled (#F0F4EF). No harsh black borders."
+    },
+    "feedback": {
+      "success": "Icon: Leaf checkmark. Color: #344E41.",
+      "warning": "Icon: Withered leaf. Color: #D4A373.",
+      "error": "Icon: Alert triangle. Color: #BC4749."
+    }
+  },
+  "visual_enhancers": {
+    "textures": "Add a subtle SVG noise overlay to the #F9F9F7 background to give it a paper feel.",
+    "shadows": "Soft, diffuse, green-tinted shadows. shadow-[0_10px_40px_-10px_rgba(52,78,65,0.1)]",
+    "glassmorphism": "Use backdrop-blur-md for the bottom navigation and scan overlays."
+  },
+  "motion": {
+    "page_transition": "Slide up and fade (like a plant growing).",
+    "micro_interactions": "Buttons scale down slightly (0.95) on press. Toggle switches should feel 'heavy' and smooth.",
+    "loading": "A growing vine or a filling leaf silhouette. No spinning circles."
+  },
+  "image_assets": {
+    "hero_bg": {
+      "url": "https://images.unsplash.com/photo-1626965556132-43d76de1004f?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "desc": "Green potted plant on table - Use for Home Header background with overlay"
+    },
+    "scan_placeholder": {
+      "url": "https://images.unsplash.com/photo-1694198598050-488edcbf5a89?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "desc": "Close up of green plant - Use for Camera permission/empty state"
+    },
+    "disease_example": {
+      "url": "https://images.unsplash.com/photo-1732135923736-f70e07953179?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "desc": "Leaf with brown spots - Use for 'Disease Detected' demo card"
+    }
+  },
+  "universal_guidelines": {
+    "do_not": [
+      "Do NOT use standard 'Success Green' (#00FF00). It looks radioactive.",
+      "Do NOT use sharp corners (rounded-none). Nature has no straight lines.",
+      "Do NOT clutter the Scan screen. It should be 90% camera view."
+    ],
+    "must_do": [
+      "MUST use 'Playfair Display' for the app title and plant names.",
+      "MUST ensure the 'Scan' button is the most prominent element on the screen.",
+      "MUST add data-testid to all interactive elements."
+    ]
+  },
+  "instructions_to_main_agent": "You are building a 'Digital Greenhouse'. The code should feel organic. Use the provided Tailwind colors. Implement the 'Floating Dock' navigation. Ensure the 'Scan' page feels immersive (full height). Use the 'sonner' library for toast notifications (e.g., 'Scan Complete')."
+}

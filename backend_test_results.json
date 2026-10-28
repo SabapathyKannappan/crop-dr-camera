@@ -1,0 +1,52 @@
+{
+  "test_summary": {
+    "total_tests": 7,
+    "passed_tests": 7,
+    "success_rate": "100.0%",
+    "timestamp": "2025-11-29T02:36:36.883677"
+  },
+  "detailed_results": [
+    {
+      "test_name": "Root Endpoint",
+      "success": true,
+      "details": "Status: 200, Response: {'message': 'Crop Doctor Camera API'}",
+      "timestamp": "2025-11-29T02:36:32.576392"
+    },
+    {
+      "test_name": "Streak Endpoint",
+      "success": true,
+      "details": "Status: 200, Streak: 0, Total: 0",
+      "timestamp": "2025-11-29T02:36:32.653289"
+    },
+    {
+      "test_name": "Diagnoses List Endpoint",
+      "success": true,
+      "details": "Status: 200, Count: 0 diagnoses",
+      "timestamp": "2025-11-29T02:36:32.697093"
+    },
+    {
+      "test_name": "Progress Endpoint",
+      "success": true,
+      "details": "Status: 200, Progress points: 0",
+      "timestamp": "2025-11-29T02:36:32.737861"
+    },
+    {
+      "test_name": "Diagnose Endpoint (AI Integration)",
+      "success": true,
+      "details": "Status: 200, Disease: Healthy Plant, Health Score: 100",
+      "timestamp": "2025-11-29T02:36:36.806547"
+    },
+    {
+      "test_name": "Single Diagnosis Endpoint",
+      "success": true,
+      "details": "Status: 200, Disease: Healthy Plant",
+      "timestamp": "2025-11-29T02:36:36.847009"
+    },
+    {
+      "test_name": "Delete Diagnosis Endpoint",
+      "success": true,
+      "details": "Status: 200, Message: Diagnosis deleted successfully",
+      "timestamp": "2025-11-29T02:36:36.883068"
+    }
+  ]
+}
