@@ -148,7 +148,11 @@ const CropDocChat = () => {
               }`}
             >
               <div className="text-sm leading-relaxed">
-                {formatMessage(message.content)}
+{formatMessage(
+  message.role === 'assistant'
+    ? message.content.replace(/[#*]/g, '')
+    : message.content
+)}
               </div>
             </div>
           </div>

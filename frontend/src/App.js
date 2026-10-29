@@ -66,21 +66,6 @@ function App() {
 
   return (
     <div className="min-h-screen paper-texture" style={{ background: '#F9F9F7' }}>
-      {/* Made with Emergent Badge - Always visible */}
-      <a
-        href="https://emergent.sh"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="emergent-badge text-xs font-medium"
-        style={{ color: '#344E41' }}
-        aria-label="Made with Emergent"
-      >
-        <span className="flex items-center gap-2">
-          <span>Made with</span>
-          <span className="font-bold" style={{ color: '#588157' }}>Emergent</span>
-        </span>
-      </a>
-      
       <BrowserRouter>
         <Routes>
           {/* Public route */}
